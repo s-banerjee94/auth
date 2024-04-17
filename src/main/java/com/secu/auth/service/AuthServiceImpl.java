@@ -17,11 +17,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AuthServiceImpl implements AuthService {
-    private AuthenticationManager authenticationManager;
-    private PasswordEncoder passwordEncoder;
-    private AppUserRepo appUserRepo;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final AppUserRepo appUserRepo;
 
     public AuthServiceImpl(AppUserRepo appUserRepo, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.appUserRepo = appUserRepo;
@@ -42,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("User exist!");
         }
         String encode = passwordEncoder.encode(password);
+        System.out.println(encode);
 
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));

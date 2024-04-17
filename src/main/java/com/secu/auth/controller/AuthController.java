@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private AuthService authService;
+    private final AuthService authService;
 
 
 
@@ -31,11 +31,13 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity<AuthResponseDto> signUp(@RequestBody AuthRequestDto authRequestDto) {
         try {
+            System.out.println(authRequestDto.username());
             String jwtToken = authService.signUp(authRequestDto.name(), authRequestDto.username(), authRequestDto.password());
             AuthResponseDto authResponseDto = new AuthResponseDto(jwtToken, AuthStatus.USER_CREATED_SUCCESSFULLY);
 
             return ResponseEntity.status(HttpStatus.OK).body(authResponseDto);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             AuthResponseDto authResponseDto = new AuthResponseDto(null, AuthStatus.USER_NOT_CREATED);
 
             return ResponseEntity.status(HttpStatus.CONFLICT).body(authResponseDto);
